@@ -4,6 +4,9 @@ from src.dtos.ISayHelloDto import ISayHelloDto
 
 app = FastAPI()
 
+async def ewaw():
+    regis = await get_dados_redis('6908f8af6c8794e55e3e8536')
+    return {"message": regis}
 
 @app.get("/")
 async def root():
