@@ -28,3 +28,15 @@ async def get_dados_redis(item_id: str):
 
     #Se não existir no MongoDb, retorna erro.
     return {"erro": "Item não encontrado"}
+
+
+#async def main():
+#    #await redis.delete('6908f8af6c8794e55e3e8536')
+#    resultado = await get_dados_redis('6908f8af6c8794e55e3e8536')
+#    print(resultado)
+#
+#if __name__ == "__main__":
+#    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+#    asyncio.run(main())
+#
+#asyncio.run(main())

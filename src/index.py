@@ -7,7 +7,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    regis = get_dados_redis('6908f8af6c8794e55e3e8536')
+    regis = await get_dados_redis('6908f8af6c8794e55e3e8536')
     return {"message": regis}
 
 
