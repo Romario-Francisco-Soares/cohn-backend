@@ -8,7 +8,7 @@ app = FastAPI()
 @app.get("/")
 async def root():
     regis = await normalize_bson(get_dados_redis('6908f8af6c8794e55e3e8536'))
-    return regis
+    return {"message": regis}
 
 
 @app.get("/hello/{name}")
