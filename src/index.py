@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from src.dbconect.upstash import get_dados_redis
+from src.dbconect.normalizadorJson import normalize_bson
 from src.dtos.ISayHelloDto import ISayHelloDto
 
 app = FastAPI()
 
 @app.get("/")
 async def root():
-    regis = await get_dados_redis('6908f8af6c8794e55e3e8536')
+    regis = await normalize_bson(get_dados_redis('6908f8af6c8794e55e3e8536'))
     return {"message": regis}
 
 
