@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from dbconect.upstash import get_dados_redis
+from src.dbconect.upstash import get_dados_redis
 from src.dtos.ISayHelloDto import ISayHelloDto
 
 app = FastAPI()

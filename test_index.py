@@ -7,7 +7,7 @@ from src.index import root, say_hello, hello_message
 @pytest.mark.asyncio
 async def test_root():
     result = await root()
-    assert result == {'message': 'Hello World'}
+    assert result['message']['nomeEmpresa'] == 'COHN TECHNOLOGY INOVA SIMPLES (I.S.)'
 
 
 @pytest.mark.asyncio
