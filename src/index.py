@@ -22,7 +22,7 @@ async def login(dto: LoginRequest):
         acessar = autenticar(dto.usuario, dto.senha, item.get('profissionais'))
         return {"message": acessar}
     else:
-        return {'erro': 'Dados de acesso inválidos'}
+        return {'erro': False}
 
 @app.get("/hello/{name}")
 async def say_hello(name: str):

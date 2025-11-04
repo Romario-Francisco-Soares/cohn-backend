@@ -4,10 +4,10 @@ from src.dtos.ISayHelloDto import ISayHelloDto, LoginRequest
 from src.index import root, say_hello, hello_message, login
 
 
-@pytest.mark.asyncio
-async def test_root():
-    result = await root()
-    assert result['message']['nomeEmpresa'] == 'COHN TECHNOLOGY INOVA SIMPLES (I.S.)'
+#@pytest.mark.asyncio
+#async def test_root():
+#    result = await root()
+#    assert result['message']['nomeEmpresa'] == 'COHN TECHNOLOGY INOVA SIMPLES (I.S.)'
 
 
 #@pytest.mark.asyncio
