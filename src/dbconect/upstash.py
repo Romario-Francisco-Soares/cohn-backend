@@ -1,6 +1,6 @@
 from upstash_redis.asyncio import Redis
 from src.dbconect.mmongodb import id_busca_mongo
-from src.dbconect.normalizadorJson import normalize_bson
+from src.utils.normalizadorJson import normalize_bson
 import json
 
 UPSTASH_REDIS_REST_URL="https://settled-jaguar-32797.upstash.io"

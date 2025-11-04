@@ -14,3 +14,7 @@ collection = db["clientes"]
 async def id_busca_mongo(item_id: str):
     item = await collection.find_one({"_id": ObjectId(item_id)})
     return item
+
+async def nome_empresa_busca_mongo(nome_empresa: str):
+    item = await collection.find_one({"nomeEmpresa": nome_empresa})
+    return item
