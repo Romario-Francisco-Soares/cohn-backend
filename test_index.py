@@ -14,8 +14,8 @@ from src.index import root, say_hello, hello_message, login
 #async def test_login():
 #    data_post = {
 #        'nomeEmpresa':'COHN TECHNOLOGY INOVA SIMPLES (I.S.)',
-#        'usuario':'Erick Viana Santiago Oliveira',
-#        'senha':'123'
+#        'login':'Erick Viana Santiago Oliveira',
+#        'password':'123'
 #    }
 #    dto = LoginRequest(**data_post)
 #    result = await login(dto)

@@ -5,5 +5,5 @@ class ISayHelloDto(BaseModel):
 
 class LoginRequest(BaseModel):
     nomeEmpresa: str
-    usuario: str
-    senha: str
+    login: str
+    password: str
