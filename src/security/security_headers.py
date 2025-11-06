@@ -6,7 +6,7 @@ def create_app():
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["https://cohn.netlify.app"],
+        allow_origins=["*"], # ou "https://cohn.netlify.app"
         allow_credentials=True,
         allow_methods=["*"], # ou ["GET", "POST", "OPTIONS"]
         allow_headers=["*"], # ou ["Authorization", "Content-Type"]
