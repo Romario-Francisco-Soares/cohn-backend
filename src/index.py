@@ -1,26 +1,22 @@
-from fastapi import FastAPI
-from src.dbconect.upstash import get_dados_redis
-from src.utils.normalizadorJson import normalize_bson
+from src.cached.upstash import get_dados_redis
+from src.utils.normalize import normalize_bson
 from src.dtos.ISayHelloDto import ISayHelloDto, LoginRequest
-from src.dbconect.mmongodb import nome_empresa_busca_mongo
-from src.utils.crypt import descriptografar
+from src.data.dataquery.mmongodb import nome_empresa_busca_mongo
+from src.security.security_headers import create_app
+from src.security.authentication import authentify
 
-app = FastAPI()
-
-def autenticar(usuario, senha, profissionais):
-    return any(prof['nome'] == usuario and descriptografar(prof['senha']) == senha for prof in profissionais)
+app = create_app()
 
 @app.get("/")
 async def root():
-    regis = await normalize_bson(get_dados_redis('6908f8af6c8794e55e3e8536'))
-    return {"message": regis}
+    regis = await get_dados_redis('6908f8af6c8794e55e3e8536')
+    return {"message": normalize_bson(regis)}
 
 @app.post("/login")
 async def login(dto: LoginRequest):
     item = await nome_empresa_busca_mongo(dto.nomeEmpresa)
     if item:
-        acessar = autenticar(dto.login, dto.password, item.get('profissionais'))
-        return {"message": acessar}
+        return {"message": authentify(dto.login, dto.password, item.get('profissionais'))}
     else:
         return {'erro': False}
 

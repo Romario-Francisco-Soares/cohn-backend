@@ -1,35 +1,35 @@
+from httpx import AsyncClient
+from src.index import app
 import pytest
 
-from src.dtos.ISayHelloDto import ISayHelloDto, LoginRequest
-from src.index import root, say_hello, hello_message, login
-
-
-#@pytest.mark.asyncio
-#async def test_root():
-#    result = await root()
-#    assert result['message']['nomeEmpresa'] == 'COHN TECHNOLOGY INOVA SIMPLES (I.S.)'
-
-
-#@pytest.mark.asyncio
-#async def test_login():
-#    data_post = {
-#        'nomeEmpresa':'COHN TECHNOLOGY INOVA SIMPLES (I.S.)',
-#        'login':'Erick Viana Santiago Oliveira',
-#        'password':'123'
-#    }
-#    dto = LoginRequest(**data_post)
-#    result = await login(dto)
-#    assert result == {'message': True}
-
+@pytest.mark.asyncio
+async def test_root():
+    async with AsyncClient(app=app, base_url="http://test") as client:
+        response = await client.get("/")
+    assert response.status_code == 200
 
 @pytest.mark.asyncio
 async def test_say_hello():
-    result = await say_hello("John")
-    assert result == {'message': 'Hello John'}
-
+    async with AsyncClient(app=app, base_url="http://test") as client:
+        response = await client.get("/hello/John")
+    assert response.status_code == 200
+    assert response.json() == {"message": "Hello John"}
 
 @pytest.mark.asyncio
 async def test_hello_message():
-    dto = ISayHelloDto(message="Alice")
-    result = await hello_message(dto)
-    assert result == {'message': 'Hello Alice'}
+    async with AsyncClient(app=app, base_url="http://test") as client:
+        response = await client.post("/hello", json={"message": "Alice"})
+    assert response.status_code == 200
+    assert response.json() == {"message": "Hello Alice"}
+
+@pytest.mark.asyncio
+async def test_login():
+    data_post = {
+        "nomeEmpresa": "COHN TECHNOLOGY INOVA SIMPLES (I.S.)",
+        "login": "Erick Viana Santiago Oliveira",
+        "password": "123"
+    }
+    async with AsyncClient(app=app, base_url="http://test") as client:
+        response = await client.post("/login", json=data_post)
+    assert response.status_code == 200
+
