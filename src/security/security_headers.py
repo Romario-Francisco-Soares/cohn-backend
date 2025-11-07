@@ -6,7 +6,10 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://cohn.netlify.app"],
+    allow_origins=[
+        "https://cohn.netlify.app",
+        "https://www.cohn.netlify.app",
+    ],
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type"],
@@ -14,11 +17,16 @@ app.add_middleware(
 
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
-    response: Response = await call_next(request)
+    # Responde imediatamente a OPTIONS (preflight) para garantir CORS
+    if request.method == "OPTIONS":
+        response = Response()
+    else:
+        response = await call_next(request)
+
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Content-Security-Policy"] = (
         "frame-ancestors 'none'; "
-        "script-src 'self'; "
+        "script-src 'self' https://cohn.netlify.app;  "
         "img-src 'self' data:; "
         "font-src 'self'; "
         "connect-src 'self' https://cohn.netlify.app; "
