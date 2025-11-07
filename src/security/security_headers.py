@@ -1,23 +1,20 @@
 from fastapi import FastAPI, Request, Response
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 
-def create_app():
-    app = FastAPI()
+#from fastapi.middleware.cors import CORSMiddleware
+app = FastAPI()
 
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["https://cohn.netlify.app"],  # domínio do frontend
-        allow_credentials=True,
-        allow_methods=["GET", "POST", "OPTIONS"],
-        allow_headers=["Authorization", "Content-Type"],
-    )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://cohn.netlify.app"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
+)
 
-    app.middleware("http")(add_security_headers)
-    return app
-
+@app.middleware("http")
 async def add_security_headers(request: Request, call_next):
     response: Response = await call_next(request)
-
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Content-Security-Policy"] = (
         "frame-ancestors 'none'; "
@@ -33,5 +30,4 @@ async def add_security_headers(request: Request, call_next):
     response.headers["Permissions-Policy"] = (
         "geolocation=(), camera=(), microphone=(), fullscreen=(self)"
     )
-
     return response
