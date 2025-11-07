@@ -6,14 +6,13 @@ def create_app():
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"], # ou "https://cohn.netlify.app"
+        allow_origins=["https://cohn.netlify.app"],  # domínio do frontend
         allow_credentials=True,
-        allow_methods=["*"], # ou ["GET", "POST", "OPTIONS"]
-        allow_headers=["*"], # ou ["Authorization", "Content-Type"]
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["Authorization", "Content-Type"],
     )
 
     app.middleware("http")(add_security_headers)
-
     return app
 
 async def add_security_headers(request: Request, call_next):
