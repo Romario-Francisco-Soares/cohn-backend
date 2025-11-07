@@ -25,7 +25,7 @@ async def add_security_headers(request: Request, call_next):
         "script-src 'self'; "
         "img-src 'self' data:; "
         "font-src 'self'; "
-        "connect-src 'self'; "
+        "connect-src 'self' https://cohn.netlify.app; "
         "base-uri 'self'; "
         "form-action 'self'; "
     )
