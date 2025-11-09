@@ -38,3 +38,6 @@ async def add_security_headers(request: Request, call_next):
         "geolocation=(), camera=(), microphone=(), fullscreen=(self)"
     )
     return response
+
+def create_app():
+    return app
