@@ -16,11 +16,8 @@ app.add_middleware(
 
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
-    # Responde imediatamente a OPTIONS (preflight) para garantir CORS
-    if request.method == "OPTIONS":
-        response = Response()
-    else:
-        response = await call_next(request)
+    # ⚠️ Não sobrescreva o OPTIONS — deixe o CORS cuidar disso
+    response = await call_next(request)
 
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Content-Security-Policy"] = (
