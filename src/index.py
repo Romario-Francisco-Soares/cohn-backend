@@ -16,7 +16,8 @@ async def root():
 async def login(dto: LoginRequest):
     item = await nome_empresa_busca_mongo(dto.nomeEmpresa)
     if item:
-        return {"message": authentify(dto.login, dto.password, item.get('profissionais'))}
+        return {"message": authentify(dto.login, dto.password, item.get('profissionais'))
+}
     else:
         return {'erro': False}
 
