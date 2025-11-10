@@ -11,14 +11,14 @@ redis = Redis(
     token=UPSTASH_REDIS_REST_TOKEN
 )
 
-async def get_dados_redis(item_id: str):
+async def get_dados_redis(item_id: str, collection: str):
     # Tenta buscar no cache
     cached = await redis.get(item_id)
     if cached:
         return json.loads(cached)
 
     # Se não existir no cache, busca no MongoDB
-    item = await id_busca_mongo(item_id)
+    item = await id_busca_mongo(item_id, collection)
 
     if item:
         # Salva no cache por 1 hora

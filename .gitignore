@@ -1,4 +1,13 @@
 .vercel
+.venv/
 venv
 .idea
 __pycache__
+.pytest_cache
+
+.venv/
+venv/
+.vercel/
+.idea/
+__pycache__/
+.pytest_cache/
