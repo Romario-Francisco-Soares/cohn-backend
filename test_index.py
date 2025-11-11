@@ -13,8 +13,6 @@ async def test_login():
     }
     async with AsyncClient(app=app, base_url="http://test") as client:
         response = await client.post("/login", json=data_post)
-        global _headers
-        _headers = {"Authorization": f"Bearer {response.json()['access_token']}"}
     assert response.status_code == 200
 
 @pytest.mark.asyncio
@@ -25,16 +23,14 @@ async def test_root():
 
 @pytest.mark.asyncio
 async def test_products_list():
-    global _headers
     async with AsyncClient(app=app, base_url="http://test") as client:
-        response = await client.post("/products_list", headers=_headers)
+        response = await client.post("/products_list")
     assert response.status_code == 200
 
 @pytest.mark.asyncio
 async def test_say_hello_authenticated():
-    global _headers
     async with AsyncClient(app=app, base_url="http://test") as client:
-        response = await client.post("/hello", json={"message": "John"}, headers=_headers)
+        response = await client.post("/hello", json={"message": "John"})
 
     assert response.status_code == 200
     data = response.json()
@@ -44,7 +40,6 @@ async def test_say_hello_authenticated():
 
 @pytest.mark.asyncio
 async def test_hello_message():
-    global _headers
     async with AsyncClient(app=app, base_url="http://test") as client:
-        response = await client.post("/hello", json={"message": "Alice"}, headers=_headers)
+        response = await client.post("/hello", json={"message": "Alice"})
     assert response.status_code == 200

@@ -34,8 +34,13 @@ def verify_token(token: str):
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Token inválido")
 
-def get_current_data(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    """ Dependência que valida o token vindo do header Authorization.
+def get_current_data_bearer(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """ Valida o token de header Authorization.
         Exemplo de uso: `user = Depends(get_current_data)`"""
-    payload = verify_token(credentials.credentials)
-    return payload
+    return verify_token(credentials.credentials)
+
+def get_current_data_cookie(cookie: str):
+    """ Valida o token de cookie
+        Exemplo de uso: `user = Depends(get_current_data_cookie(cookie))`"""
+    #print(cookie)
+    return verify_token(cookie) if cookie else None

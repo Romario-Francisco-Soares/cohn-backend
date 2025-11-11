@@ -2,11 +2,12 @@ from src.cached.upstash import get_dados_redis
 from src.utils.normalize import normalize_bson
 from src.dtos.ISayHelloDto import ISayHelloDto, LoginRequestDto, TokenDTO
 from src.data.dataquery.mmongodb import ds_busca_mongo
-from src.security.security_headers import create_app
+from src.security.security import create_app, setting_cookies
 from src.security.authentication import authentify
-from src.security.jwt_handler import create_access_token, get_current_data
+from src.security.jwt_handler import create_access_token, get_current_data_cookie, get_current_data_bearer
 
-from fastapi import Depends
+from fastapi.responses import JSONResponse
+from fastapi import Depends, Request
 
 app = create_app()
 
@@ -17,26 +18,35 @@ async def root():
 
 @app.post("/login")
 async def login(dto: LoginRequestDto):
-    item = await ds_busca_mongo("nomeEmpresa", dto.nomeEmpresa, 'clientes')
-    if item:
-        if authentify(dto.login, dto.password, item.get('profissionais')):
-            token = create_access_token({"profissional": dto.login,
-                                         "empresa": dto.nomeEmpresa,
-                                         "produtos": item.get('produtos')})
+    partner_data = await ds_busca_mongo("nomeEmpresa", dto.nomeEmpresa, 'clientes')
 
-            return {"access_token": token, "token_type": "bearer"}
-        return {"erro": "Usuário ou senha incorretos"}
-    return {"erro": "Empresa não encontrada"}
+    if not partner_data:
+        return {"erro": "Dados de acesso incorretos"}
+
+    if not authentify(dto.login, dto.password, partner_data.get('profissionais')):
+        return {"erro": "Dados de acesso incorretos"}
+
+    token = create_access_token(
+        {"profissional": dto.login,
+         "empresa": dto.nomeEmpresa,
+         "produtos": partner_data.get('produtos')
+         }
+    )
+    response_json = JSONResponse({"message": "Login efetuado com sucesso"})
+
+    return setting_cookies(response_json, token)
 
 @app.post("/products_list")
-async def products_list(data=Depends(get_current_data)):
+async def products_list(request: Request):
+    cookie = request.get("access_token")
+    data = get_current_data_cookie(cookie=cookie)
     products = [await get_dados_redis(normalize_bson(prod), 'produtos') for prod in data.get('produtos')]
     return products
 
 @app.get("/hello/{name}")
-async def say_hello(name: str, data=Depends(get_current_data)):
+async def say_hello(name: str, data=Depends(get_current_data_bearer)):
     return {"message": f"Hello {name}", "data": data}
 
 @app.post("/hello")
-async def hello_message(dto: ISayHelloDto, data=Depends(get_current_data)):
+async def hello_message(dto: ISayHelloDto, data=Depends(get_current_data_bearer)):
     return {"message": f"Hello {dto.message}", "data": data}
