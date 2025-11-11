@@ -50,7 +50,8 @@ def create_app() -> FastAPI:
     return app
 
 def setting_cookies(response: JSONResponse, token: str):
-    response.set_cookie(
+    resp = response
+    resp.set_cookie(
         key="access_token",
         value=token,
         httponly=True,
@@ -59,4 +60,4 @@ def setting_cookies(response: JSONResponse, token: str):
         max_age=1800,
         path="/"
     )
-    return response
+    return resp

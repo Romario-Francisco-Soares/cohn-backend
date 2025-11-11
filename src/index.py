@@ -33,8 +33,8 @@ async def login(dto: LoginRequestDto):
          }
     )
     response_json = JSONResponse({"message": "Login efetuado com sucesso"})
-
-    return setting_cookies(response_json, token)
+    response = setting_cookies(response_json, token)
+    return response
 
 @app.post("/products_list")
 async def products_list(request: Request):
