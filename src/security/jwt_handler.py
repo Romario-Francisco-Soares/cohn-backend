@@ -42,5 +42,4 @@ def get_current_data_bearer(credentials: HTTPAuthorizationCredentials = Depends(
 def get_current_data_cookie(cookie: str):
     """ Valida o token de cookie
         Exemplo de uso: `user = Depends(get_current_data_cookie(cookie))`"""
-    #print(cookie)
     return verify_token(cookie) if cookie else None
