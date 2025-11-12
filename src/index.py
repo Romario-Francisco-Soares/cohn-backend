@@ -38,7 +38,7 @@ async def login(dto: LoginRequestDto):
 
 @app.get("/products_list")
 async def products_list(request: Request):
-    cookie = request.get("access_token")
+    cookie = request.cookies.get("access_token")
     if not cookie:
         return {"erro": "Erro de cookies"}
 
