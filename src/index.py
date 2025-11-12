@@ -39,8 +39,17 @@ async def login(dto: LoginRequestDto):
 @app.post("/products_list")
 async def products_list(request: Request):
     cookie = request.get("access_token")
+    if not cookie:
+        return {"erro": "Erro de cookies"}
+
     data = get_current_data_cookie(cookie=cookie)
+    if not data:
+        return {"erro": "Erro de dados"}
+
     products = [await get_dados_redis(normalize_bson(prod), 'produtos') for prod in data.get('produtos')]
+    if not products:
+        return {"erro": "Erro de produtos"}
+
     return products
 
 @app.get("/hello/{name}")
