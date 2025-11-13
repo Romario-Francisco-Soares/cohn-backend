@@ -7,10 +7,10 @@
     { "src": "/(.*)", "dest": "api/index.py",
 
       "headers": {
-        "Access-Control-Allow-Origin": "https://cohn.netlify.app",
+        "Access-Control-Allow-Origin": "https://cohn.netlify.app, https://www.cohn.netlify.app, https://cohn-backend.vercel.app",
         "Access-Control-Allow-Credentials": "true",
-        "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type,Authorization,Accept"
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept"
       }
 
     }

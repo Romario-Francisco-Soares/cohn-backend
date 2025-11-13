@@ -49,7 +49,7 @@ def create_app() -> FastAPI:
                 "form-action 'self'; "
             ),
         )
-        response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+        response.headers.setdefault("Referrer-Policy", "origin")
         response.headers.setdefault(
             "Strict-Transport-Security", "max-age=31536000; includeSubDomains"
         )
