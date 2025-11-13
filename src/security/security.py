@@ -14,7 +14,7 @@ def create_app() -> FastAPI:
         ],
         allow_credentials=True,
         allow_methods=["GET", "POST", "OPTIONS"],
-        allow_headers=["Authorization", "Content-Type"],
+        allow_headers=["Authorization", "Content-Type", "Accept"],
     )
 
     @app.middleware("http")
