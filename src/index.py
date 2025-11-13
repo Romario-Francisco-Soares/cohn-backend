@@ -49,8 +49,9 @@ async def products_list(request: Request):
     products = [await get_dados_redis(normalize_bson(prod), 'produtos') for prod in data.get('produtos')]
     if not products:
         return {"erro": "Erro de produtos"}
-
-    return products
+    response_json = JSONResponse({products[...]})
+    response = setting_cookies(response_json, cookie)
+    return response
 
 @app.get("/hello/{name}")
 async def say_hello(name: str, data=Depends(get_current_data_bearer)):

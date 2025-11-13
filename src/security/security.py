@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 origins = ["https://cohn.netlify.app","https://www.cohn.netlify.app",
            "https://cohn-backend.vercel.app"]
 methods = ["GET", "POST", "OPTIONS"]
-headers = ["Authorization", "Content-Type"]
+headers = ["Authorization", "Content-Type", "Accept"]
 
 def create_app() -> FastAPI:
     app = FastAPI()
