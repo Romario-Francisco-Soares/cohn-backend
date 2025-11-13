@@ -33,7 +33,7 @@ async def login(dto: LoginRequestDto):
          }
     )
     response_json = JSONResponse({"message": "Login efetuado com sucesso"})
-    response = setting_cookies(response_json, token)
+    response = setting_cookies(response_json, token, "access_token")
     return response
 
 @app.get("/products_list")
@@ -47,10 +47,11 @@ async def products_list(request: Request):
         return {"erro": "Erro de dados"}
 
     products = [await get_dados_redis(normalize_bson(prod), 'produtos') for prod in data.get('produtos')]
+    print(products)
     if not products:
         return {"erro": "Erro de produtos"}
-    response_json = JSONResponse({products[...]})
-    response = setting_cookies(response_json, cookie)
+    response_json = JSONResponse(products)
+    response = setting_cookies(response_json, cookie, "access_token")
     return response
 
 @app.get("/hello/{name}")

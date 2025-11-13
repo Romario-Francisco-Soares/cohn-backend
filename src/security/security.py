@@ -15,14 +15,14 @@ def create_app() -> FastAPI:
         CORSMiddleware,
         allow_origins=ALLOWED_ORIGINS,
         allow_credentials=True,
-        allow_methods=["GET", "POST", "OPTIONS"],
-        allow_headers=["Authorization", "Content-Type", "Accept"],
+        allow_methods=methods,
+        allow_headers=headers,
     )
     return app
 
-def setting_cookies(response: JSONResponse, token: str):
+def setting_cookies(response: JSONResponse, token: str, cookie_name: str):
     response.set_cookie(
-        key="access_token",
+        key=cookie_name,
         value=token,
         httponly=True,
         secure=True,
