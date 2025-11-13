@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -24,8 +24,9 @@ def setting_cookies(response: JSONResponse, token: str, cookie_name: str):
     response.set_cookie(
         key=cookie_name,
         value=token,
-        httponly=True,
+        domain=".netlify.app",
         secure=True,
+        httponly=True,
         samesite="none",
         max_age=1800,
         path="/",
