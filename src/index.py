@@ -54,7 +54,6 @@ async def products_list(request: Request):
     response = setting_cookies(response_json, cookie, "access_token")
     return response
 
-
 @app.post("/product_access")
 async def product_access(request: Request, dto: SystemIdAcess):
     cookie = request.cookies.get("access_token")
@@ -74,7 +73,6 @@ async def product_access(request: Request, dto: SystemIdAcess):
     response = setting_cookies(redirect_response, cookie, "access_token")
 
     return response
-
 
 @app.get("/hello/{name}")
 async def say_hello(name: str, data=Depends(get_current_data_bearer)):
