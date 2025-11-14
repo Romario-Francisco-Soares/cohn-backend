@@ -26,7 +26,7 @@ def setting_cookies(response: Union[JSONResponse, RedirectResponse], token: str,
     response.set_cookie(
         key=cookie_name,
         value=token,
-        domain=".netlify.app",
+        #domain=".netlify.app",
         secure=True,
         httponly=True,
         samesite="none",

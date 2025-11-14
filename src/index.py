@@ -68,7 +68,7 @@ async def product_access(request: Request, dto: SystemIdAcess):
     url = products.get("url_sistema")
     if not url:
         return {"erro": "Erro em url de sistemas"}
-    
+
     redirect_response = RedirectResponse(url=url, status_code=302)
 
     response = setting_cookies(redirect_response, cookie, "access_token")
