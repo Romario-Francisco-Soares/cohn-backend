@@ -1,6 +1,8 @@
+from typing import Union
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import RedirectResponse, JSONResponse
 
 ALLOWED_ORIGINS = ["https://cohn.netlify.app","https://www.cohn.netlify.app",
                     "https://cohn-backend.vercel.app"
@@ -20,7 +22,7 @@ def create_app() -> FastAPI:
     )
     return app
 
-def setting_cookies(response: JSONResponse, token: str, cookie_name: str):
+def setting_cookies(response: Union[JSONResponse, RedirectResponse], token: str, cookie_name: str):
     response.set_cookie(
         key=cookie_name,
         value=token,

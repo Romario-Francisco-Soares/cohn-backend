@@ -6,7 +6,7 @@ from src.security.security import create_app, setting_cookies
 from src.security.authentication import authentify
 from src.security.jwt_handler import create_access_token, get_current_data_cookie, get_current_data_bearer
 
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi import Depends, Request
 
 app = create_app()
@@ -47,12 +47,26 @@ async def products_list(request: Request):
         return {"erro": "Erro de dados"}
 
     products = [await get_dados_redis(normalize_bson(prod), 'produtos') for prod in data.get('produtos')]
-    print(products)
     if not products:
         return {"erro": "Erro de produtos"}
+
     response_json = JSONResponse(products)
     response = setting_cookies(response_json, cookie, "access_token")
     return response
+
+
+@app.post("/product_access")
+async def product_access(request: Request):
+    cookie = request.cookies.get("access_token")
+    if not cookie:
+        return {"erro": "Erro de cookies"}
+
+    redirect_response = RedirectResponse(url="https://athoms.netlify.app/", status_code=302)
+
+    response = setting_cookies(redirect_response, cookie, "access_token")
+
+    return response
+
 
 @app.get("/hello/{name}")
 async def say_hello(name: str, data=Depends(get_current_data_bearer)):
