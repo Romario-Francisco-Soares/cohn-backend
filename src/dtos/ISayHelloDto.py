@@ -9,6 +9,9 @@ class LoginRequestDto(BaseModel):
     login: str
     password: str
 
+class SystemIdAcess(BaseModel):
+    systemId: str
+
 class TokenDTO(BaseModel):
     token: str
 #

@@ -1,6 +1,6 @@
 from src.cached.upstash import get_dados_redis
 from src.utils.normalize import normalize_bson
-from src.dtos.ISayHelloDto import ISayHelloDto, LoginRequestDto, TokenDTO
+from src.dtos.ISayHelloDto import ISayHelloDto, LoginRequestDto, SystemIdAcess
 from src.data.dataquery.mmongodb import ds_busca_mongo
 from src.security.security import create_app, setting_cookies
 from src.security.authentication import authentify
@@ -56,12 +56,20 @@ async def products_list(request: Request):
 
 
 @app.post("/product_access")
-async def product_access(request: Request):
+async def product_access(request: Request, dto: SystemIdAcess):
     cookie = request.cookies.get("access_token")
     if not cookie:
         return {"erro": "Erro de cookies"}
 
-    redirect_response = RedirectResponse(url="https://athoms.netlify.app/", status_code=302)
+    products = await get_dados_redis(normalize_bson(dto.systemId), 'produtos')
+    if not products:
+        return {"erro": "Erro de produtos"}
+
+    url = products.get("url_sistema")
+    if not url:
+        return {"erro": "Erro em url de sistemas"}
+    
+    redirect_response = RedirectResponse(url=url, status_code=302)
 
     response = setting_cookies(redirect_response, cookie, "access_token")
 
